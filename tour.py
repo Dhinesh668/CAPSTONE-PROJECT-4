@@ -21,10 +21,6 @@ def load_model():
 df = load_data()
 model = load_model()
 
-# Debug: show columns in dataframe to verify all needed features are present
-st.write("Columns in DataFrame:", df.columns.tolist())
-
-# User preferences on main page (no sidebar)
 st.header("User Preferences")
 
 continent = st.selectbox("Select Continent", df['Continent'].unique())
@@ -36,14 +32,6 @@ city = st.selectbox(
     "Select City",
     df[(df['Continent'] == continent) & (df['Country'] == country)]['City'].unique()
 )
-
-st.write("---")
-
-# Display chosen inputs
-st.write("### 🧭 Selected Location & Preference")
-st.write(f"**Continent:** {continent}")
-st.write(f"**Country:** {country}")
-st.write(f"**City:** {city}")
 
 # Predict button triggers prediction
 if st.button("Predict Visit Mode"):
@@ -69,14 +57,14 @@ if st.button("Predict Visit Mode"):
         city_avg_rating = city_ratings.mean() if not city_ratings.empty else 0
         city_visit_count = len(city_ratings)
 
-        # VisitMonth related features - adjust the column name if different
+        # VisitMonth related features
         visit_month_column = 'VisitMonth' if 'VisitMonth' in df.columns else 'Visit_YearMonth'  # fallback example
         visit_month_val = sample.get(visit_month_column, 1)  # fallback to 1 if missing
 
         visit_month_sin = np.sin(2 * np.pi * visit_month_val / 12)
         visit_month_cos = np.cos(2 * np.pi * visit_month_val / 12)
 
-        # Construct feature vector matching your model features
+        # Construct feature vector 
         your_features = [
             sample['ContinentId'],
             sample['RegionId'],
